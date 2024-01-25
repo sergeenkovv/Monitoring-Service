@@ -1,7 +1,10 @@
 package com.ivan;
 
-public class Main {
+import com.ivan.console.MonitoringConsole;
+
+public class AppRunner {
     public static void main(String[] args) {
-        System.out.println("Hello world!");
+        MonitoringConsole monitoringConsole = MonitoringConsole.getINSTANCE();
+        monitoringConsole.start();
     }
 }
