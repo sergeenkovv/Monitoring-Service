@@ -5,9 +5,11 @@ import com.ivan.model.entity.Player;
 import com.ivan.model.types.Role;
 import com.ivan.service.SecurityService;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class SecurityServiceImpl implements SecurityService {
 
@@ -27,7 +29,6 @@ public class SecurityServiceImpl implements SecurityService {
         playerMap.put("admin", Player.builder()
                 .username("admin")
                 .password("123")
-                .personalAccount(0)
                 .role(Role.ADMIN)
                 .readingsList(new ArrayList<>())
                 .build());
@@ -49,7 +50,7 @@ public class SecurityServiceImpl implements SecurityService {
         Player newPlayer = Player.builder()
                 .username(username)
                 .password(password)
-                .personalAccount(checkPersonalAccount())
+                .role(Role.PLAYER)
                 .readingsList(new ArrayList<>())
                 .build();
         playerMap.put(username, newPlayer);
@@ -68,20 +69,5 @@ public class SecurityServiceImpl implements SecurityService {
             System.out.println("успех");
             return username;
         }
-    }
-
-    private int checkPersonalAccount() {
-        List<Integer> personalAccountList = new ArrayList<>();
-
-        Random random = new Random();
-        int randomPersonalAccount = random.nextInt(10);
-
-        for (Integer num : personalAccountList) {
-            if (num.equals(randomPersonalAccount)) {
-                System.out.println("число уже есть");
-                checkPersonalAccount();
-            }
-        }
-        return randomPersonalAccount;
     }
 }

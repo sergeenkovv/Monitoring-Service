@@ -10,6 +10,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.time.YearMonth;
 import java.util.Scanner;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
@@ -78,30 +79,34 @@ public class MonitoringConsole {
                 int choice = actionScreenHandler.readChoice();
 
                 switch (choice) {
-//                    case 1 -> userService.getLatestMeterReadings(getLoggedInUserName());
+                    case 1 -> userService.getCurrentMeterReadings(getLoggedInUserName());
                     case 2 -> {
                         System.out.println("подача показаний");
                         String playerName = getLoggedInUserName();
                         actionScreenHandler.meterTypeMenu();
+                        MeterType meterType = null;
+                        int choice2 = actionScreenHandler.readChoice();
+                        switch (choice2) {
+                            case 1 -> meterType = MeterType.HOT_WATTER;
+                            case 2 -> meterType = MeterType.COLD_WATTER;
+                            case 3 -> meterType = MeterType.HEATING;
+                            case 4 -> meterType = MeterType.CHOCOLATE;
+                        }
                         System.out.println("Введите сколько");
-                        Integer counterHOT_WATTER = scanner.nextInt();
-                        userService.submitMeterReading(playerName, MeterType.HOT_WATTER, counterHOT_WATTER);
-                        System.out.println("Введите сколько");
-                        Integer counterCOLD_WATTER = scanner.nextInt();
-                        userService.submitMeterReading(playerName, MeterType.COLD_WATTER, counterCOLD_WATTER);
-                        System.out.println("Введите сколько");
-                        Integer counterHEATING = scanner.nextInt();
-                        userService.submitMeterReading(playerName, MeterType.HEATING, counterHEATING);
-                        System.out.println("Введите сколько");
-                        Integer counterCHOCOLATE = scanner.nextInt();
-                        userService.submitMeterReading(playerName, MeterType.CHOCOLATE, counterCHOCOLATE);
+                        Integer counter = scanner.nextInt();
+                        userService.submitMeterReading(playerName, meterType, counter);
                     }
                     case 3 -> {
                         System.out.println("просмотра показаний за конкретный месяц");
+                        System.out.print("Введите год (например, 2023): ");
+                        int year = scanner.nextInt();
+                        System.out.print("Введите месяц (например, 3 для марта): ");
+                        int month = scanner.nextInt();
+                        YearMonth date = YearMonth.of(year, month);
+                        userService.getMeterReadingsByMonth(getLoggedInUserName(), date);
                     }
-                    case 4 -> {
-                        userService.getMeterReadingHistory(getLoggedInUserName());
-                    }
+                    case 4 -> userService.getMeterReadingHistory(getLoggedInUserName());
+
                 }
             }
         }

@@ -21,8 +21,6 @@ public class Player {
 
     private String password;
 
-    private Integer personalAccount;
-
     private Role role;
 
     private List<MeterReading> readingsList;
