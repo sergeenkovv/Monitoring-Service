@@ -1,10 +1,10 @@
 package com.ivan.service;
 
-import java.util.UUID;
+import com.ivan.model.entity.Player;
 
 public interface SecurityService {
 
-    void registration(String login, String password);
+    Player registration(String login, String password);
 
-    String authorization(String login, String password);
+    Player authorization(String login, String password);
 }

@@ -6,7 +6,6 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDate;
 import java.time.YearMonth;
 
 @Data
@@ -15,8 +14,9 @@ import java.time.YearMonth;
 @NoArgsConstructor
 public class MeterReading {
 
-//    private Player playerId;
-    private String username; //в планах Player
+    private Long id;
+
+    private String username;
 
     private MeterType meterType;
 
