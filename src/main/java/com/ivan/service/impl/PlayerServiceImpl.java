@@ -1,10 +1,11 @@
 package com.ivan.service.impl;
 
 import com.ivan.dao.MeterReadingDao;
+import com.ivan.exception.DuplicateReadingsException;
 import com.ivan.model.entity.MeterReading;
 import com.ivan.model.types.MeterType;
 import com.ivan.service.PlayerService;
-import com.ivan.validator.UserValidator;
+import com.ivan.validator.PlayerValidator;
 
 import java.time.LocalDateTime;
 import java.time.YearMonth;
@@ -12,11 +13,11 @@ import java.util.List;
 
 public class PlayerServiceImpl implements PlayerService {
 
-    private final UserValidator userValidator;
+    private final PlayerValidator playerValidator;
     private final MeterReadingDao meterReadingDao;
 
-    public PlayerServiceImpl(UserValidator userValidator, MeterReadingDao meterReadingDao) {
-        this.userValidator = userValidator;
+    public PlayerServiceImpl(PlayerValidator playerValidator, MeterReadingDao meterReadingDao) {
+        this.playerValidator = playerValidator;
         this.meterReadingDao = meterReadingDao;
     }
 
@@ -25,8 +26,8 @@ public class PlayerServiceImpl implements PlayerService {
     }
 
     public void submitMeterReading(String username, MeterType meterType, Integer counter) {
-        if (userValidator.isValid(username, meterType)) {
-            System.out.println("вы уже отправляли показание в этом месяце");
+        if (playerValidator.isValid(username, meterType)) {
+            throw new DuplicateReadingsException("You have already submitted a reading this month");
         }
 
         MeterReading meterReading = MeterReading.builder()

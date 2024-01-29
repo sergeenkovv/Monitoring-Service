@@ -12,7 +12,7 @@ import com.ivan.service.PlayerService;
 import com.ivan.service.SecurityService;
 import com.ivan.service.impl.PlayerServiceImpl;
 import com.ivan.service.impl.SecurityServiceImpl;
-import com.ivan.validator.UserValidator;
+import com.ivan.validator.PlayerValidator;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -51,7 +51,7 @@ public class ApplicationContext {
 
     private static void loadServiceLayer() {
         PlayerService playerService = new PlayerServiceImpl(
-                (UserValidator) CONTEXT.get("userValidator"),
+                (PlayerValidator) CONTEXT.get("playerValidator"),
                 (MeterReadingDao) CONTEXT.get("meterReadingDao")
         );
         CONTEXT.put("playerService", playerService);
@@ -62,7 +62,7 @@ public class ApplicationContext {
     private static void loadControllers() {
         MainController controller = new MainController(
                 (SecurityService) CONTEXT.get("securityService"),
-                (PlayerService) CONTEXT.get("userService")
+                (PlayerService) CONTEXT.get("playerService")
         );
         CONTEXT.put("controller", controller);
     }
@@ -73,6 +73,6 @@ public class ApplicationContext {
     }
 
     private static void loadValidator() {
-        CONTEXT.put("userValidator", new UserValidator((MeterReadingDao) CONTEXT.get("meterReadingDao")));
+        CONTEXT.put("playerValidator", new PlayerValidator((MeterReadingDao) CONTEXT.get("meterReadingDao")));
     }
 }

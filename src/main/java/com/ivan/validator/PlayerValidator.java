@@ -7,11 +7,11 @@ import com.ivan.model.types.MeterType;
 import java.time.YearMonth;
 import java.util.List;
 
-public class UserValidator {
+public class PlayerValidator {
 
     private final MeterReadingDao meterReadingDao;
 
-    public UserValidator(MeterReadingDao meterReadingDao) {
+    public PlayerValidator(MeterReadingDao meterReadingDao) {
         this.meterReadingDao = meterReadingDao;
     }
 
