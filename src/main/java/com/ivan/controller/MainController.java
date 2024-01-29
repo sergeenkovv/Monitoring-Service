@@ -26,8 +26,8 @@ public class MainController {
             throw new NotValidArgumentException("The password or login cannot be empty or consist of only spaces");
         }
 
-        if (password.length() > 32) {
-            throw new NotValidArgumentException("The password must be between 1 and 32 characters long.");
+        if (password.length() < 3 || password.length() > 32) {
+            throw new NotValidArgumentException("The password must be between 3 and 32 characters long.");
         }
 
         return securityService.registration(login, password);
