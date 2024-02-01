@@ -6,19 +6,17 @@ import com.ivan.model.entity.Player;
 import com.ivan.model.types.MeterType;
 import com.ivan.service.SecurityService;
 import com.ivan.service.PlayerService;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.List;
 
 @Slf4j
+@RequiredArgsConstructor
 public class MainController {
+
     private final SecurityService securityService;
     private final PlayerService playerService;
-
-    public MainController(SecurityService securityService, PlayerService playerService) {
-        this.securityService = securityService;
-        this.playerService = playerService;
-    }
 
     public Player register(String login, String password) {
         log.info("The player trying to register with login " + login + " and password " + password);
@@ -40,21 +38,21 @@ public class MainController {
 
     public List<MeterReading> showCurrentMeterReadings(Player player) {
         log.info("The player" + player.getUsername() + "trying to get meter readings for the current month");
-        return playerService.getCurrentMeterReadings(player.getUsername());
+        return playerService.getCurrentMeterReadings(player.getId());
     }
 
     public void submitMeterReading(Player player, MeterType meterType, Integer counter) {
         log.info("The player " + player + " is trying to send meter readings");
-        playerService.submitMeterReading(player.getUsername(), meterType, counter);
+        playerService.submitMeterReading(player.getId(), meterType, counter);
     }
 
     public List<MeterReading> showMeterReadingsByMonth(Player player, Integer year, Integer month) {
         log.info("The player" + player.getUsername() + "trying to get meter readings for the " + year + month);
-        return playerService.getMeterReadingsByMonth(player.getUsername(), year, month);
+        return playerService.getMeterReadingsByMonth(player.getId(), year, month);
     }
 
     public List<MeterReading> showMeterReadingHistory(Player player) {
         log.info("The player" + player.getUsername() + "trying to get get the history of sending meter readings");
-        return playerService.getMeterReadingHistory(player.getUsername());
+        return playerService.getMeterReadingHistory(player.getId());
     }
 }
