@@ -3,13 +3,13 @@ package com.ivan.exception;
 /**
  * The type Authorize exception.
  */
-public class AuthorizeException extends RuntimeException {
+public class AuthorizationException extends RuntimeException {
     /**
      * Instantiates a new Authorize exception.
      *
      * @param message the message
      */
-    public AuthorizeException(String message) {
+    public AuthorizationException(String message) {
         super(message);
     }
 }
