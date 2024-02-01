@@ -7,11 +7,11 @@ import java.util.List;
 
 public interface PlayerService {
 
-    List<MeterReading> getCurrentMeterReadings(String username);
+    List<MeterReading> getCurrentMeterReadings(Long playerId);
 
-    void submitMeterReading(String username, MeterType meterType, Integer counter);
+    void submitMeterReading(Long playerId, MeterType meterType, Integer counter);
 
-    List<MeterReading> getMeterReadingHistory(String username);
+    List<MeterReading> getMeterReadingHistory(Long playerId);
 
-    List<MeterReading> getMeterReadingsByMonth(String username, Integer year, Integer month);
+    List<MeterReading> getMeterReadingsByMonth(Long playerId, Integer year, Integer month);
 }

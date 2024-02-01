@@ -6,8 +6,7 @@ import java.util.List;
 
 public interface MeterReadingDao extends GeneralDao<Long, MeterReading> {
 
-    List<MeterReading> findAllByPlayerUsername(String playerName);
+    List<MeterReading> findAllByPlayerId(Long playerId);
 
-    List<MeterReading> findAllByPlayerUsernameAndYearMonth(String playerName, int year, int month);
-
+    List<MeterReading> findAllByPlayerIdAndYearMonth(Long playerId, int year, int month);
 }
