@@ -1,4 +1,4 @@
-package com.ivan.out;
+package com.ivan.in;
 
 public class ConsoleOutputData implements OutputData {
     @Override
