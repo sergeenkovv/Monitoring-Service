@@ -33,6 +33,10 @@ public class MainController {
     }
 
     public Player authorize(String login, String password) {
+        if (login == null || password == null || login.isEmpty() || login.isBlank() || password.isEmpty() || password.isBlank()) {
+            throw new NotValidArgumentException("The password or login cannot be empty or consist of only spaces");
+        }
+
         log.info("The player trying to log in with login " + login + " and password " + password);
         return securityService.authorization(login, password);
     }
@@ -42,22 +46,30 @@ public class MainController {
         return playerService.getCurrentMeterReadings(player.getId());
     }
 
-    public void submitMeterReading(Player player, String meterType, Integer counter) {
+    public void submitMeterReading(Player player, String meterType, String counter) {
         if (!isValidMeterType(meterType)) {
             throw new NotValidArgumentException("You have entered an incorrect meter reading type. Check the correct spelling of the meter reading type");
         }
 
-        if (counter < 0) {
+        if (!isValidNum(counter)) {
+            throw new NotValidArgumentException("You entered an unknown value. Make sure the number you enter is digits only.");
+        }
+
+        if (Integer.parseInt(counter) < 0) {
             throw new NotValidArgumentException("You entered a negative number. use numbers greater than or equal to 0");
         }
 
         log.info("The player " + player + " is trying to send meter readings");
-        playerService.submitMeterReading(player.getId(), meterType, counter);
+        playerService.submitMeterReading(player.getId(), meterType, Integer.parseInt(counter));
     }
 
-    public List<MeterReading> showMeterReadingsByMonth(Player player, Integer year, Integer month) {
+    public List<MeterReading> showMeterReadingsByMonth(Player player, String year, String month) {
+        if (!isValidNum(year, month)) {
+            throw new NotValidArgumentException("You entered an unknown value. Make sure the number you enter is digits only.");
+        }
+
         log.info("The player" + player.getUsername() + "trying to get meter readings for the " + year + month);
-        return playerService.getMeterReadingsByMonth(player.getId(), year, month);
+        return playerService.getMeterReadingsByMonth(player.getId(), Integer.parseInt(year), Integer.parseInt(month));
     }
 
     public List<MeterReading> showMeterReadingHistory(Player player) {
@@ -68,5 +80,10 @@ public class MainController {
     private boolean isValidMeterType(String meterType) {
         return Arrays.stream(MeterType.values())
                 .anyMatch(type -> meterType.equals(type.name()));
+    }
+
+    private boolean isValidNum(String... inputs) {
+        return Arrays.stream(inputs)
+                .allMatch(input -> input.matches("\\d+"));
     }
 }

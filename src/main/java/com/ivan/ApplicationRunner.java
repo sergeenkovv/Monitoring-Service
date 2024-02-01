@@ -158,7 +158,7 @@ public class ApplicationRunner {
             final String monthMessage = "Enter month:";
             outputData.output(monthMessage);
             String monthOut = inputData.input().toString();
-            List<MeterReading> history = controller.showMeterReadingsByMonth(ApplicationContext.getAuthorizePlayer(), Integer.valueOf(yearOut), Integer.valueOf(monthOut));
+            List<MeterReading> history = controller.showMeterReadingsByMonth(ApplicationContext.getAuthorizePlayer(), yearOut, monthOut);
             if (history == null || history.isEmpty()) {
                 outputData.output("You haven't submitted your meter readings yet.\n");
             } else {
@@ -179,7 +179,7 @@ public class ApplicationRunner {
             final String counterMess = "Enter how much. Negative numbers are not allowed!";
             outputData.output(counterMess);
             String countOutp = inputData.input().toString();
-            controller.submitMeterReading(ApplicationContext.getAuthorizePlayer(), meterType, Integer.valueOf(countOutp));
+            controller.submitMeterReading(ApplicationContext.getAuthorizePlayer(), meterType, countOutp);
         }
 
 
