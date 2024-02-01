@@ -1,15 +1,15 @@
 package com.ivan;
 
 import com.ivan.controller.MainController;
-import com.ivan.exception.AuthorizeException;
+import com.ivan.exception.AuthorizationException;
 import com.ivan.exception.DuplicateReadingsException;
 import com.ivan.exception.NotValidArgumentException;
-import com.ivan.exception.RegisterException;
+import com.ivan.exception.RegistrationException;
 import com.ivan.in.InputData;
+import com.ivan.in.OutputData;
 import com.ivan.model.entity.MeterReading;
 import com.ivan.model.entity.Player;
 import com.ivan.model.types.MeterType;
-import com.ivan.out.OutputData;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.List;
@@ -39,10 +39,10 @@ public class ApplicationRunner {
                         processIsRun = false;
                     }
                 }
-            } catch (AuthorizeException |
+            } catch (AuthorizationException |
                      DuplicateReadingsException |
                      NotValidArgumentException |
-                     RegisterException e) {
+                     RegistrationException e) {
                 log.warn(e.getMessage());
                 outputData.errOutput(e.getMessage());
             } catch (RuntimeException e) {
@@ -172,14 +172,18 @@ public class ApplicationRunner {
         private static void handlerSubmitMeterReading(InputData inputData, OutputData outputData) {
             final String readingMsg = "Select which readings to send.";
             outputData.output(readingMsg);
-            for (MeterType type : MeterType.values()) {
-                System.out.println(type);
+            try {
+                for (MeterType type : MeterType.values()) {
+                    System.out.println(type);
+                }
+                String meterType = inputData.input().toString();
+                final String counterMess = "Enter how much.";
+                outputData.output(counterMess);
+                String countOutp = inputData.input().toString();
+                controller.submitMeterReading(ApplicationContext.getAuthorizePlayer(), MeterType.valueOf(meterType), Integer.valueOf(countOutp));
+            } catch (IllegalArgumentException e) {
+                throw new NotValidArgumentException("you entered an invalid type of meter reading");
             }
-            String meterType = inputData.input().toString();
-            final String counterMess = "Enter how much.";
-            outputData.output(counterMess);
-            String countOutp = inputData.input().toString();
-            controller.submitMeterReading(ApplicationContext.getAuthorizePlayer(), MeterType.valueOf(meterType), Integer.valueOf(countOutp));
         }
 
         private static void handlerShowCurrentMeterReadings(OutputData outputData) {

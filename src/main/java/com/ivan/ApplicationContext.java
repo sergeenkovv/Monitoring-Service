@@ -7,7 +7,7 @@ import com.ivan.dao.impl.MemoryMeterReadingsDaoImpl;
 import com.ivan.dao.impl.MemoryPlayerDaoImpl;
 import com.ivan.in.ConsoleInputData;
 import com.ivan.model.entity.Player;
-import com.ivan.out.ConsoleOutputData;
+import com.ivan.in.ConsoleOutputData;
 import com.ivan.service.PlayerService;
 import com.ivan.service.SecurityService;
 import com.ivan.service.impl.PlayerServiceImpl;

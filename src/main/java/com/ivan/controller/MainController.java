@@ -4,8 +4,8 @@ import com.ivan.exception.NotValidArgumentException;
 import com.ivan.model.entity.MeterReading;
 import com.ivan.model.entity.Player;
 import com.ivan.model.types.MeterType;
-import com.ivan.service.SecurityService;
 import com.ivan.service.PlayerService;
+import com.ivan.service.SecurityService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 

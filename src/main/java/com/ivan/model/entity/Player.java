@@ -5,8 +5,6 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.List;
-
 @Data
 @Builder
 @AllArgsConstructor
@@ -18,7 +16,4 @@ public class Player {
     private String username;
 
     private String password;
-
-    //бляяя хочу сюда private List<MeterReading> meterReadingList; въебать.
-//    как это сделать -- смотри в плейлисте про хибернейт
 }

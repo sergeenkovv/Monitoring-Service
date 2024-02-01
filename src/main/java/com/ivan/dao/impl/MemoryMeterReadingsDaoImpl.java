@@ -3,7 +3,10 @@ package com.ivan.dao.impl;
 import com.ivan.dao.MeterReadingDao;
 import com.ivan.model.entity.MeterReading;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class MemoryMeterReadingsDaoImpl implements MeterReadingDao {
 
