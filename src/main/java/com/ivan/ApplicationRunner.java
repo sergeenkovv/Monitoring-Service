@@ -172,19 +172,16 @@ public class ApplicationRunner {
         private static void handlerSubmitMeterReading(InputData inputData, OutputData outputData) {
             final String readingMsg = "Select which readings to send.";
             outputData.output(readingMsg);
-            try {
-                for (MeterType type : MeterType.values()) {
-                    System.out.println(type);
-                }
-                String meterType = inputData.input().toString();
-                final String counterMess = "Enter how much.";
-                outputData.output(counterMess);
-                String countOutp = inputData.input().toString();
-                controller.submitMeterReading(ApplicationContext.getAuthorizePlayer(), MeterType.valueOf(meterType), Integer.valueOf(countOutp));
-            } catch (IllegalArgumentException e) {
-                throw new NotValidArgumentException("you entered an invalid type of meter reading");
+            for (MeterType type : MeterType.values()) {
+                outputData.output(type);
             }
+            String meterType = inputData.input().toString();
+            final String counterMess = "Enter how much. Negative numbers are not allowed!";
+            outputData.output(counterMess);
+            String countOutp = inputData.input().toString();
+            controller.submitMeterReading(ApplicationContext.getAuthorizePlayer(), meterType, Integer.valueOf(countOutp));
         }
+
 
         private static void handlerShowCurrentMeterReadings(OutputData outputData) {
             List<MeterReading> history = controller.showCurrentMeterReadings(ApplicationContext.getAuthorizePlayer());

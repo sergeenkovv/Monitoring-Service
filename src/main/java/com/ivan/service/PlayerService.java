@@ -9,7 +9,7 @@ public interface PlayerService {
 
     List<MeterReading> getCurrentMeterReadings(Long playerId);
 
-    void submitMeterReading(Long playerId, MeterType meterType, Integer counter);
+    void submitMeterReading(Long playerId, String meterType, Integer counter);
 
     List<MeterReading> getMeterReadingHistory(Long playerId);
 

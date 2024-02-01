@@ -5,7 +5,6 @@ import com.ivan.exception.DuplicateReadingsException;
 import com.ivan.model.entity.MeterReading;
 import com.ivan.model.types.MeterType;
 import com.ivan.service.PlayerService;
-import com.ivan.validator.PlayerValidator;
 import lombok.RequiredArgsConstructor;
 
 import java.time.LocalDateTime;
@@ -15,20 +14,19 @@ import java.util.List;
 @RequiredArgsConstructor
 public class PlayerServiceImpl implements PlayerService {
 
-    private final PlayerValidator playerValidator;
     private final MeterReadingDao meterReadingDao;
 
     public List<MeterReading> getCurrentMeterReadings(Long playerId) {
         return getMeterReadingsByMonth(playerId, LocalDateTime.now().getYear(), LocalDateTime.now().getMonthValue());
     }
 
-    public void submitMeterReading(Long playerId, MeterType meterType, Integer counter) {
-        if (playerValidator.isValid(playerId, meterType)) {
+    public void submitMeterReading(Long playerId, String meterType, Integer counter) {
+        if (isValidMeterReadings(playerId, MeterType.valueOf(meterType))) {
             throw new DuplicateReadingsException("You have already submitted a reading this month");
         }
 
         MeterReading meterReading = MeterReading.builder()
-                .meterType(meterType)
+                .meterType(MeterType.valueOf(meterType))
                 .counter(counter)
                 .date(YearMonth.now())
                 .playerId(playerId)
@@ -43,5 +41,13 @@ public class PlayerServiceImpl implements PlayerService {
 
     public List<MeterReading> getMeterReadingHistory(Long playerId) {
         return meterReadingDao.findAllByPlayerId(playerId);
+    }
+
+    private boolean isValidMeterReadings(Long playerId, MeterType meterType) {
+        List<MeterReading> allByPlayerUsername = meterReadingDao.findAllByPlayerId(playerId);
+
+        return allByPlayerUsername.stream()
+                .anyMatch(reading -> reading.getMeterType() == meterType &&
+                                     YearMonth.from(reading.getDate()).equals(YearMonth.now()));
     }
 }

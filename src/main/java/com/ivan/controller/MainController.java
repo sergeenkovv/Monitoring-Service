@@ -9,6 +9,7 @@ import com.ivan.service.SecurityService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
+import java.util.Arrays;
 import java.util.List;
 
 @Slf4j
@@ -19,7 +20,6 @@ public class MainController {
     private final PlayerService playerService;
 
     public Player register(String login, String password) {
-        log.info("The player trying to register with login " + login + " and password " + password);
         if (login == null || password == null || login.isEmpty() || login.isBlank() || password.isEmpty() || password.isBlank()) {
             throw new NotValidArgumentException("The password or login cannot be empty or consist of only spaces");
         }
@@ -28,6 +28,7 @@ public class MainController {
             throw new NotValidArgumentException("The password must be between 3 and 32 characters long.");
         }
 
+        log.info("The player trying to register with login " + login + " and password " + password);
         return securityService.registration(login, password);
     }
 
@@ -41,7 +42,15 @@ public class MainController {
         return playerService.getCurrentMeterReadings(player.getId());
     }
 
-    public void submitMeterReading(Player player, MeterType meterType, Integer counter) {
+    public void submitMeterReading(Player player, String meterType, Integer counter) {
+        if (!isValidMeterType(meterType)) {
+            throw new NotValidArgumentException("You have entered an incorrect meter reading type. Check the correct spelling of the meter reading type");
+        }
+
+        if (counter < 0) {
+            throw new NotValidArgumentException("You entered a negative number. use numbers greater than or equal to 0");
+        }
+
         log.info("The player " + player + " is trying to send meter readings");
         playerService.submitMeterReading(player.getId(), meterType, counter);
     }
@@ -54,5 +63,10 @@ public class MainController {
     public List<MeterReading> showMeterReadingHistory(Player player) {
         log.info("The player" + player.getUsername() + "trying to get get the history of sending meter readings");
         return playerService.getMeterReadingHistory(player.getId());
+    }
+
+    private boolean isValidMeterType(String meterType) {
+        return Arrays.stream(MeterType.values())
+                .anyMatch(type -> meterType.equals(type.name()));
     }
 }
