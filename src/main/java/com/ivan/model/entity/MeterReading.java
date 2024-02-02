@@ -16,11 +16,11 @@ public class MeterReading {
 
     private Long id;
 
-    private String username;
-
     private MeterType meterType;
 
     private Integer counter;
 
     private YearMonth date;
+
+    private Long playerId;
 }

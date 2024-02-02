@@ -1,4 +1,4 @@
-package com.ivan.out;
+package com.ivan.in;
 
 /**
  * The interface Output data.

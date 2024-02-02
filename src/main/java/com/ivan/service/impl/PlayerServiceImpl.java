@@ -5,46 +5,49 @@ import com.ivan.exception.DuplicateReadingsException;
 import com.ivan.model.entity.MeterReading;
 import com.ivan.model.types.MeterType;
 import com.ivan.service.PlayerService;
-import com.ivan.validator.PlayerValidator;
+import lombok.RequiredArgsConstructor;
 
 import java.time.LocalDateTime;
 import java.time.YearMonth;
 import java.util.List;
 
+@RequiredArgsConstructor
 public class PlayerServiceImpl implements PlayerService {
 
-    private final PlayerValidator playerValidator;
     private final MeterReadingDao meterReadingDao;
 
-    public PlayerServiceImpl(PlayerValidator playerValidator, MeterReadingDao meterReadingDao) {
-        this.playerValidator = playerValidator;
-        this.meterReadingDao = meterReadingDao;
+    public List<MeterReading> getCurrentMeterReadings(Long playerId) {
+        return getMeterReadingsByMonth(playerId, LocalDateTime.now().getYear(), LocalDateTime.now().getMonthValue());
     }
 
-    public List<MeterReading> getCurrentMeterReadings(String username) {
-        return getMeterReadingsByMonth(username, LocalDateTime.now().getYear(), LocalDateTime.now().getMonthValue());
-    }
-
-    public void submitMeterReading(String username, MeterType meterType, Integer counter) {
-        if (playerValidator.isValid(username, meterType)) {
+    public void submitMeterReading(Long playerId, String meterType, Integer counter) {
+        if (isValidMeterReadings(playerId, MeterType.valueOf(meterType))) {
             throw new DuplicateReadingsException("You have already submitted a reading this month");
         }
 
         MeterReading meterReading = MeterReading.builder()
-                .username(username)
-                .meterType(meterType)
+                .meterType(MeterType.valueOf(meterType))
                 .counter(counter)
                 .date(YearMonth.now())
+                .playerId(playerId)
                 .build();
 
         meterReadingDao.save(meterReading);
     }
 
-    public List<MeterReading> getMeterReadingsByMonth(String username, Integer year, Integer month) {
-        return meterReadingDao.findAllByPlayerUsernameAndYearMonth(username, year, month);
+    public List<MeterReading> getMeterReadingsByMonth(Long playerId, Integer year, Integer month) {
+        return meterReadingDao.findAllByPlayerIdAndYearMonth(playerId, year, month);
     }
 
-    public List<MeterReading> getMeterReadingHistory(String username) {
-        return meterReadingDao.findAllByPlayerUsername(username);
+    public List<MeterReading> getMeterReadingHistory(Long playerId) {
+        return meterReadingDao.findAllByPlayerId(playerId);
+    }
+
+    private boolean isValidMeterReadings(Long playerId, MeterType meterType) {
+        List<MeterReading> allByPlayerUsername = meterReadingDao.findAllByPlayerId(playerId);
+
+        return allByPlayerUsername.stream()
+                .anyMatch(reading -> reading.getMeterType() == meterType &&
+                                     YearMonth.from(reading.getDate()).equals(YearMonth.now()));
     }
 }

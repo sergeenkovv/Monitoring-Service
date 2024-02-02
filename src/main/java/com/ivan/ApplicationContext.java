@@ -6,13 +6,12 @@ import com.ivan.dao.PlayerDao;
 import com.ivan.dao.impl.MemoryMeterReadingsDaoImpl;
 import com.ivan.dao.impl.MemoryPlayerDaoImpl;
 import com.ivan.in.ConsoleInputData;
+import com.ivan.in.ConsoleOutputData;
 import com.ivan.model.entity.Player;
-import com.ivan.out.ConsoleOutputData;
 import com.ivan.service.PlayerService;
 import com.ivan.service.SecurityService;
 import com.ivan.service.impl.PlayerServiceImpl;
 import com.ivan.service.impl.SecurityServiceImpl;
-import com.ivan.validator.PlayerValidator;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -22,7 +21,6 @@ public class ApplicationContext {
 
     public static void loadContext() {
         loadDaoLayer();
-        loadValidator();
         loadServiceLayer();
         loadControllers();
         loadInputOutputLayer();
@@ -51,11 +49,13 @@ public class ApplicationContext {
 
     private static void loadServiceLayer() {
         PlayerService playerService = new PlayerServiceImpl(
-                (PlayerValidator) CONTEXT.get("playerValidator"),
                 (MeterReadingDao) CONTEXT.get("meterReadingDao")
         );
         CONTEXT.put("playerService", playerService);
-        SecurityService securityService = new SecurityServiceImpl((PlayerDao) CONTEXT.get("playerDao"));
+
+        SecurityService securityService = new SecurityServiceImpl(
+                (PlayerDao) CONTEXT.get("playerDao")
+        );
         CONTEXT.put("securityService", securityService);
     }
 
@@ -70,9 +70,5 @@ public class ApplicationContext {
     private static void loadInputOutputLayer() {
         CONTEXT.put("input", new ConsoleInputData());
         CONTEXT.put("output", new ConsoleOutputData());
-    }
-
-    private static void loadValidator() {
-        CONTEXT.put("playerValidator", new PlayerValidator((MeterReadingDao) CONTEXT.get("meterReadingDao")));
     }
 }

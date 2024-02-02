@@ -1,15 +1,15 @@
 package com.ivan;
 
 import com.ivan.controller.MainController;
-import com.ivan.exception.AuthorizeException;
+import com.ivan.exception.AuthorizationException;
 import com.ivan.exception.DuplicateReadingsException;
 import com.ivan.exception.NotValidArgumentException;
-import com.ivan.exception.RegisterException;
+import com.ivan.exception.RegistrationException;
 import com.ivan.in.InputData;
+import com.ivan.in.OutputData;
 import com.ivan.model.entity.MeterReading;
 import com.ivan.model.entity.Player;
 import com.ivan.model.types.MeterType;
-import com.ivan.out.OutputData;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.List;
@@ -39,10 +39,10 @@ public class ApplicationRunner {
                         processIsRun = false;
                     }
                 }
-            } catch (AuthorizeException |
+            } catch (AuthorizationException |
                      DuplicateReadingsException |
                      NotValidArgumentException |
-                     RegisterException e) {
+                     RegistrationException e) {
                 log.warn(e.getMessage());
                 outputData.errOutput(e.getMessage());
             } catch (RuntimeException e) {
@@ -158,7 +158,7 @@ public class ApplicationRunner {
             final String monthMessage = "Enter month:";
             outputData.output(monthMessage);
             String monthOut = inputData.input().toString();
-            List<MeterReading> history = controller.showMeterReadingsByMonth(ApplicationContext.getAuthorizePlayer(), Integer.valueOf(yearOut), Integer.valueOf(monthOut));
+            List<MeterReading> history = controller.showMeterReadingsByMonth(ApplicationContext.getAuthorizePlayer(), yearOut, monthOut);
             if (history == null || history.isEmpty()) {
                 outputData.output("You haven't submitted your meter readings yet.\n");
             } else {
@@ -173,13 +173,13 @@ public class ApplicationRunner {
             final String readingMsg = "Select which readings to send.";
             outputData.output(readingMsg);
             for (MeterType type : MeterType.values()) {
-                System.out.println(type);
+                outputData.output(type);
             }
             String meterType = inputData.input().toString();
-            final String counterMess = "Enter how much.";
+            final String counterMess = "Enter how much. Negative numbers are not allowed!";
             outputData.output(counterMess);
             String countOutp = inputData.input().toString();
-            controller.submitMeterReading(ApplicationContext.getAuthorizePlayer(), MeterType.valueOf(meterType), Integer.valueOf(countOutp));
+            controller.submitMeterReading(ApplicationContext.getAuthorizePlayer(), meterType, countOutp);
         }
 
         private static void handlerShowCurrentMeterReadings(OutputData outputData) {
