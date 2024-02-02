@@ -26,7 +26,7 @@ public class MemoryMeterReadingsDaoImpl implements MeterReadingDao {
     }
 
     @Override
-    public List<MeterReading> findAllByPlayerIdAndYearMonth(Long playerId, int year, int month) {
+    public List<MeterReading> findAllByPlayerIdAndYearMonth(Long playerId, Integer year, Integer month) {
         List<MeterReading> result = new ArrayList<>();
 
         for (MeterReading reading : readingMap.values()) {

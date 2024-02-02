@@ -8,5 +8,5 @@ public interface MeterReadingDao extends GeneralDao<Long, MeterReading> {
 
     List<MeterReading> findAllByPlayerId(Long playerId);
 
-    List<MeterReading> findAllByPlayerIdAndYearMonth(Long playerId, int year, int month);
+    List<MeterReading> findAllByPlayerIdAndYearMonth(Long playerId, Integer year, Integer month);
 }

@@ -182,7 +182,6 @@ public class ApplicationRunner {
             controller.submitMeterReading(ApplicationContext.getAuthorizePlayer(), meterType, countOutp);
         }
 
-
         private static void handlerShowCurrentMeterReadings(OutputData outputData) {
             List<MeterReading> history = controller.showCurrentMeterReadings(ApplicationContext.getAuthorizePlayer());
             if (history == null || history.isEmpty()) {

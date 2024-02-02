@@ -21,45 +21,41 @@ public class MainController {
 
     public Player register(String login, String password) {
         if (login == null || password == null || login.isEmpty() || login.isBlank() || password.isEmpty() || password.isBlank()) {
-            throw new NotValidArgumentException("The password or login cannot be empty or consist of only spaces");
+            throw new NotValidArgumentException("The password or login cannot be empty or consist of only spaces.");
         }
 
         if (password.length() < 3 || password.length() > 32) {
             throw new NotValidArgumentException("The password must be between 3 and 32 characters long.");
         }
 
-        log.info("The player trying to register with login " + login + " and password " + password);
+        log.info("The player trying to register with login " + login + " and password " + password + ".");
         return securityService.registration(login, password);
     }
 
     public Player authorize(String login, String password) {
         if (login == null || password == null || login.isEmpty() || login.isBlank() || password.isEmpty() || password.isBlank()) {
-            throw new NotValidArgumentException("The password or login cannot be empty or consist of only spaces");
+            throw new NotValidArgumentException("The password or login cannot be empty or consist of only spaces.");
         }
 
-        log.info("The player trying to log in with login " + login + " and password " + password);
+        log.info("The player trying to log in with login " + login + " and password " + password + ".");
         return securityService.authorization(login, password);
     }
 
     public List<MeterReading> showCurrentMeterReadings(Player player) {
-        log.info("The player" + player.getUsername() + "trying to get meter readings for the current month");
+        log.info("The player" + player.getUsername() + "trying to get meter readings for the current month.");
         return playerService.getCurrentMeterReadings(player.getId());
     }
 
     public void submitMeterReading(Player player, String meterType, String counter) {
         if (!isValidMeterType(meterType)) {
-            throw new NotValidArgumentException("You have entered an incorrect meter reading type. Check the correct spelling of the meter reading type");
+            throw new NotValidArgumentException("You have entered an incorrect meter reading type. Check the correct spelling of the meter reading type.");
         }
 
         if (!isValidNum(counter)) {
-            throw new NotValidArgumentException("You entered an unknown value. Make sure the number you enter is digits only.");
+            throw new NotValidArgumentException("You entered an unknown value. Make sure the number you enter contains only digits. The number must be greater than or equal to 0.");
         }
 
-        if (Integer.parseInt(counter) < 0) {
-            throw new NotValidArgumentException("You entered a negative number. use numbers greater than or equal to 0");
-        }
-
-        log.info("The player " + player + " is trying to send meter readings");
+        log.info("The player " + player + " is trying to send meter readings.");
         playerService.submitMeterReading(player.getId(), meterType, Integer.parseInt(counter));
     }
 
@@ -68,12 +64,12 @@ public class MainController {
             throw new NotValidArgumentException("You entered an unknown value. Make sure the number you enter is digits only.");
         }
 
-        log.info("The player" + player.getUsername() + "trying to get meter readings for the " + year + month);
+        log.info("The player" + player.getUsername() + "trying to get meter readings for the " + year + month + ".");
         return playerService.getMeterReadingsByMonth(player.getId(), Integer.parseInt(year), Integer.parseInt(month));
     }
 
     public List<MeterReading> showMeterReadingHistory(Player player) {
-        log.info("The player" + player.getUsername() + "trying to get get the history of sending meter readings");
+        log.info("The player" + player.getUsername() + "trying to get get the history of sending meter readings.");
         return playerService.getMeterReadingHistory(player.getId());
     }
 
