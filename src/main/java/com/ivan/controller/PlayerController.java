@@ -5,7 +5,6 @@ import com.ivan.model.entity.MeterReading;
 import com.ivan.model.entity.Player;
 import com.ivan.model.types.MeterType;
 import com.ivan.service.PlayerService;
-import com.ivan.service.SecurityService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -14,32 +13,9 @@ import java.util.List;
 
 @Slf4j
 @RequiredArgsConstructor
-public class MainController {
+public class PlayerController {
 
-    private final SecurityService securityService;
     private final PlayerService playerService;
-
-    public Player register(String login, String password) {
-        if (login == null || password == null || login.isEmpty() || login.isBlank() || password.isEmpty() || password.isBlank()) {
-            throw new NotValidArgumentException("The password or login cannot be empty or consist of only spaces.");
-        }
-
-        if (password.length() < 3 || password.length() > 32) {
-            throw new NotValidArgumentException("The password must be between 3 and 32 characters long.");
-        }
-
-        log.info("The player trying to register with login " + login + " and password " + password + ".");
-        return securityService.registration(login, password);
-    }
-
-    public Player authorize(String login, String password) {
-        if (login == null || password == null || login.isEmpty() || login.isBlank() || password.isEmpty() || password.isBlank()) {
-            throw new NotValidArgumentException("The password or login cannot be empty or consist of only spaces.");
-        }
-
-        log.info("The player trying to log in with login " + login + " and password " + password + ".");
-        return securityService.authorization(login, password);
-    }
 
     public List<MeterReading> showCurrentMeterReadings(Player player) {
         log.info("The player" + player.getUsername() + "trying to get meter readings for the current month.");

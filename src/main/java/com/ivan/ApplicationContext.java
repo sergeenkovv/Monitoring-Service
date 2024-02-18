@@ -1,6 +1,7 @@
 package com.ivan;
 
-import com.ivan.controller.MainController;
+import com.ivan.controller.PlayerController;
+import com.ivan.controller.SecurityController;
 import com.ivan.dao.MeterReadingDao;
 import com.ivan.dao.PlayerDao;
 import com.ivan.dao.impl.MemoryMeterReadingsDaoImpl;
@@ -60,11 +61,15 @@ public class ApplicationContext {
     }
 
     private static void loadControllers() {
-        MainController controller = new MainController(
-                (SecurityService) CONTEXT.get("securityService"),
+        PlayerController playerController = new PlayerController(
                 (PlayerService) CONTEXT.get("playerService")
         );
-        CONTEXT.put("controller", controller);
+        CONTEXT.put("playerController", playerController);
+
+        SecurityController securityController = new SecurityController(
+                (SecurityService) CONTEXT.get("securityService")
+        );
+        CONTEXT.put("securityController", securityController);
     }
 
     private static void loadInputOutputLayer() {

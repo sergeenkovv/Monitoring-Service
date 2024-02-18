@@ -1,6 +1,7 @@
 package com.ivan;
 
-import com.ivan.controller.MainController;
+import com.ivan.controller.PlayerController;
+import com.ivan.controller.SecurityController;
 import com.ivan.exception.AuthorizationException;
 import com.ivan.exception.DuplicateReadingsException;
 import com.ivan.exception.NotValidArgumentException;
@@ -17,14 +18,16 @@ import java.util.List;
 @Slf4j
 public class ApplicationRunner {
 
-    private static MainController controller;
+    private static PlayerController playerController;
+    private static SecurityController securityController;
     private static ProcessStage currentStage;
 
     public static void run() {
         ApplicationContext.loadContext();
         InputData inputData = (InputData) ApplicationContext.getBean("input");
         OutputData outputData = (OutputData) ApplicationContext.getBean("output");
-        controller = (MainController) ApplicationContext.getBean("controller");
+        playerController = (PlayerController) ApplicationContext.getBean("playerController");
+        securityController = (SecurityController) ApplicationContext.getBean("securityController");
         currentStage = ProcessStage.SECURITY;
         outputData.output("Welcome!\n");
 
@@ -91,6 +94,7 @@ public class ApplicationRunner {
                 5. Log out of your account.
                 0. Quit the application.
                 """;
+
         while (true) {
             outputData.output(menu);
             String input = inputData.input().toString();
@@ -116,7 +120,6 @@ public class ApplicationRunner {
         }
     }
 
-
     private static void exitProcess(OutputData outputData) {
         final String message = "Goodbye!";
         outputData.output(message);
@@ -140,7 +143,7 @@ public class ApplicationRunner {
 
     private static class HandlerMenu {
         private static void handlerShowMeterReadingHistory(OutputData outputData) {
-            List<MeterReading> history = controller.showMeterReadingHistory(ApplicationContext.getAuthorizePlayer());
+            List<MeterReading> history = playerController.showMeterReadingHistory(ApplicationContext.getAuthorizePlayer());
             if (history == null || history.isEmpty()) {
                 outputData.output("You have not a history of sending meter readings.\n");
             } else {
@@ -158,7 +161,7 @@ public class ApplicationRunner {
             final String monthMessage = "Enter month:";
             outputData.output(monthMessage);
             String monthOut = inputData.input().toString();
-            List<MeterReading> history = controller.showMeterReadingsByMonth(ApplicationContext.getAuthorizePlayer(), yearOut, monthOut);
+            List<MeterReading> history = playerController.showMeterReadingsByMonth(ApplicationContext.getAuthorizePlayer(), yearOut, monthOut);
             if (history == null || history.isEmpty()) {
                 outputData.output("You haven't submitted your meter readings yet.\n");
             } else {
@@ -179,11 +182,11 @@ public class ApplicationRunner {
             final String counterMess = "Enter how much. Negative numbers are not allowed!";
             outputData.output(counterMess);
             String countOutp = inputData.input().toString();
-            controller.submitMeterReading(ApplicationContext.getAuthorizePlayer(), meterType, countOutp);
+            playerController.submitMeterReading(ApplicationContext.getAuthorizePlayer(), meterType, countOutp);
         }
 
         private static void handlerShowCurrentMeterReadings(OutputData outputData) {
-            List<MeterReading> history = controller.showCurrentMeterReadings(ApplicationContext.getAuthorizePlayer());
+            List<MeterReading> history = playerController.showCurrentMeterReadings(ApplicationContext.getAuthorizePlayer());
             if (history == null || history.isEmpty()) {
                 outputData.output("You haven't submitted your meter readings yet.\n");
             } else {
@@ -204,7 +207,7 @@ public class ApplicationRunner {
             outputData.output(passMsg);
             String password = inputData.input().toString();
 
-            Player authorizedPlayer = controller.authorize(login, password);
+            Player authorizedPlayer = securityController.authorize(login, password);
             ApplicationContext.loadAuthorizePlayer(authorizedPlayer);
             currentStage = ProcessStage.MAIN_MENU;
         }
@@ -217,7 +220,7 @@ public class ApplicationRunner {
             outputData.output(passMsg);
             String password = inputData.input().toString();
 
-            Player registeredPlayer = controller.register(login, password);
+            Player registeredPlayer = securityController.register(login, password);
             ApplicationContext.loadAuthorizePlayer(registeredPlayer);
             currentStage = ProcessStage.MAIN_MENU;
         }
