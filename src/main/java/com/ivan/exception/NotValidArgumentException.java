@@ -1,5 +1,8 @@
 package com.ivan.exception;
 
+/**
+ * The type Not valid argument exception.
+ */
 public class NotValidArgumentException extends RuntimeException {
     /**
      * Instantiates a new Not valid argument exception.
