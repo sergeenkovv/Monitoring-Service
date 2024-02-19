@@ -9,7 +9,7 @@ The ApplicationContext class simulates the operation of an IoC Container.
 I decided to show in practice my excellent understanding of the internal structure and operating principles of the Spring Framework.
 So I did it this way and not otherwise.
 ___
-## Tech stack
+## Tech stack:
 + Java 17
 + Lombok
 + Log4j2
@@ -19,7 +19,7 @@ ___
 + ~~Spring Framework 6~~ 😁
 ___
 ## Startup instructions
-+ Run the ```Main``` class to start the application
++ Run the ```Main``` class to start the application.
 ___
 ## Contact me:
 + Email: [itproger181920@gmail.com](https://mail.google.com/mail/u/0/?view=cm&fs=1&tf=1&to=itproger181920@gmail.com) 📬
