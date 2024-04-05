@@ -18,7 +18,7 @@ structure of the application and principles of operation of the Spring Framework
 So I decided to write a console application that incorporates dependency injection principles similar to Spring and has
 a minimum of dependencies.
 
-+ The ApplicationContext class simulates the operation of an IoC Container.
++ The ApplicationContext class simulates the operation of the Spring IoC Container.
 + the ApplicationRunner class simulates API creation service (for example Postman)
 + DAO classes simulates working with a database. Since the application does not have a data store, information is stored
   in
