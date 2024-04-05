@@ -19,12 +19,11 @@ So I decided to write a console application that incorporates dependency injecti
 a minimum of dependencies.
 
 + The ApplicationContext class simulates the operation of an IoC Container.
-+ the ApplicationRunner class emulates API creation service (for example Postman)
-+ DAO classes emulate working with a database. Since the application does not have a data store, information is stored
++ the ApplicationRunner class simulates API creation service (for example Postman)
++ DAO classes simulates working with a database. Since the application does not have a data store, information is stored
   in
-  collections
-+ Controller classes handle requests from the ApplicationRunner class
-  Therefore the application has the minimum possible number of dependencies.
+  collections.
++ Controller classes handle requests from the ApplicationRunner class, which simulates the work of Postman.
 
 ## Tech stack
 
