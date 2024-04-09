@@ -11,4 +11,3 @@ public class MonitoringServiceApplication {
         ApplicationRunner.run();
     }
 }
-// TODO: 05.04.2024 РЕАЛИЗУЙ DTO ЧТОБЫ ПРОЕКТ МОЖНО БЫЛО НЕСТЫДНО ЗАПУШИТЬ
