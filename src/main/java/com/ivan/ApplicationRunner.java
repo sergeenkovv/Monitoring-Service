@@ -171,7 +171,7 @@ public class ApplicationRunner {
          */
         SECURITY,
         /**
-         * Main menu process stage.
+         * MonitoringServiceApplication menu process stage.
          */
         MAIN_MENU,
         /**

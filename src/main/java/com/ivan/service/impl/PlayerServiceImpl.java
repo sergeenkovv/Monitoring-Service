@@ -39,7 +39,7 @@ public class PlayerServiceImpl implements PlayerService {
      * @param counter The meter reading value.
      */
     public void submitMeterReading(Long playerId, String meterType, Integer counter) {
-        if (isValidMeterReadings(playerId, MeterType.valueOf(meterType))) {
+        if (!isValidMeterReadings(playerId, MeterType.valueOf(meterType))) {
             throw new DuplicateReadingsException("You have already submitted a reading this month");
         }
 
@@ -85,8 +85,15 @@ public class PlayerServiceImpl implements PlayerService {
     private boolean isValidMeterReadings(Long playerId, MeterType meterType) {
         List<MeterReading> allByPlayerUsername = meterReadingDao.findAllByPlayerId(playerId);
 
-        return allByPlayerUsername.stream()
-                .anyMatch(reading -> reading.getMeterType() == meterType &&
-                                     YearMonth.from(reading.getDate()).equals(YearMonth.now()));
+        for (MeterReading reading : allByPlayerUsername) {
+            if (reading.getMeterType() == meterType &&
+                YearMonth.from(reading.getDate()).equals(YearMonth.now())) {
+                return false;
+            }
+        }
+        return true;
     }
 }
+//        return allByPlayerUsername.stream()
+//                .anyMatch(reading -> reading.getMeterType() == meterType &&
+//                YearMonth.from(reading.getDate()).equals(YearMonth.now()));
